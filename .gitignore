@@ -1,0 +1,7 @@
+node_modules
+.c9
+dist
+logs
+npm-debug.log
+package-lock.json
+test/config.json

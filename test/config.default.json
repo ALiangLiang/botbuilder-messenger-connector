@@ -1,0 +1,6 @@
+{
+  "verifyToken": "VERIFY_TOKEN",
+  "channelId": "",
+  "channelSecret": "APP_SECRET",
+  "channelAccessToken": "ACCESS_TOKEN"
+}

@@ -1,0 +1,53 @@
+{
+  "name": "botbuilder-messenger-connector",
+  "version": "0.1.0",
+  "description": "Microsoft Bot Framework V3 connector for Messenger Platform api",
+  "main": "index.js",
+  "scripts": {
+    "dev": "gulp & node_modules/.bin/ntsc -w & DEBUG=connector node_modules/.bin/nodemon test/app.js",
+    "ngrok": " ngrok http 9090",
+    "start": "node test/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ALiangLiang/botbuilder-messenger-connector.git"
+  },
+  "keywords": [
+    "messenger",
+    "botbuilder",
+    "connector"
+  ],
+  "author": "ALiangLiang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ALiangLiang/botbuilder-messenger-connector/issues"
+  },
+  "homepage": "https://github.com/ALiangLiang/botbuilder-messenger-connector",
+  "dependencies": {
+    "array-flatten": "^2.1.1",
+    "body-parser": "^1.15.2",
+    "botbuilder": "^3.4.4",
+    "co-body": "^5.1.1",
+    "crypto": "^0.0.3",
+    "es6-shim": "^0.35.2",
+    "express": "^4.14.0",
+    "lodash": "^4.15.0",
+    "messenger-components": "file:../messenger-components",
+    "node-fetch": "^1.6.3",
+    "parse-server": "^2.4.2",
+    "promise-queue": "^2.2.3",
+    "redis": "^2.6.5"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^0.0.33",
+    "@types/es6-shim": "^0.31.32",
+    "@types/parse": "^1.2.32",
+    "debug": "^2.6.8",
+    "gulp": "^3.9.1",
+    "gulp-watch": "^4.3.11",
+    "install": "^0.10.1",
+    "nodemon": "^1.11.0",
+    "npm": "^5.3.0",
+    "ntypescript": "^1.201706190042.1"
+  }
+}
