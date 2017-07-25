@@ -1,1 +1,1 @@
-module.exports = require('./dist/LineConnector');
+module.exports = require('./dist/MessengerConnector');

@@ -7,8 +7,7 @@ const {
 
 const builder = require('botbuilder');
 
-module.exports = {};
-module.exports.messengerConnector = new MessengerConnector(require('./config.json'), (context, data, callback) => {
+const messengerConnector = new MessengerConnector(require('./config.json'), (context, data, callback) => {
   let cid = context.address.channelId;
   client.set(cid, JSON.stringify(data));
   callback(null);
@@ -21,9 +20,12 @@ module.exports.messengerConnector = new MessengerConnector(require('./config.jso
   });
 });
 
-var bot = new builder.UniversalBot(MessengerConnector);
+module.exports = {
+  messengerConnector
+};
+const bot = new builder.UniversalBot(messengerConnector);
 
-let getText = (session, i) =>
+const getText = (session, i) =>
   session.localizer.gettext(session.preferredLocale(), i);
 
 bot.dialog('/', [

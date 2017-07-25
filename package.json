@@ -4,9 +4,10 @@
   "description": "Microsoft Bot Framework V3 connector for Messenger Platform api",
   "main": "index.js",
   "scripts": {
-    "dev": "gulp & node_modules/.bin/ntsc -w & DEBUG=connector node_modules/.bin/nodemon test/app.js",
+    "build-dev": "gulp & node_modules/.bin/ntsc -w",
+    "dev": "gulp & node_modules/.bin/ntsc -w & DEBUG=connector node_modules/.bin/nodemon test/server.js",
     "ngrok": " ngrok http 9090",
-    "start": "node test/app.js"
+    "start": "node test/server.js"
   },
   "repository": {
     "type": "git",
@@ -27,12 +28,13 @@
     "array-flatten": "^2.1.1",
     "body-parser": "^1.15.2",
     "botbuilder": "^3.4.4",
+    "chunk": "0.0.2",
     "co-body": "^5.1.1",
     "crypto": "^0.0.3",
     "es6-shim": "^0.35.2",
     "express": "^4.14.0",
     "lodash": "^4.15.0",
-    "messenger-components": "file:../messenger-components",
+    "messenger-bot-components": "file:../messenger-bot-components",
     "node-fetch": "^1.6.3",
     "parse-server": "^2.4.2",
     "promise-queue": "^2.2.3",

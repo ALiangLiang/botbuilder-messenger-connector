@@ -1,5 +1,5 @@
 // import * as _ from "lodash";
-process.env.DEBUG_DEPTH = 7;
+process.env.DEBUG_DEPTH = 10;
 
 import * as botbuilder from "botbuilder";
 import bodyParser = require("body-parser");
@@ -163,9 +163,11 @@ export class MessengerConnector implements botbuilder.IConnector {
     }
     body.entry.forEach(function(entry) {
       entry.messaging.forEach((msg) => {
-
+        console.log(msg)
         try {
-          let mid = msg.message.mid;
+          let mid = (msg.message) ? 
+            msg.message.mid :
+            `${msg.recipient.id}${msg.timestamp}${msg.sender.id}`;
           // _this.groupId = mid;
           // _this.groupType = msg.source.type;
           // _this.messageId = msg.message.id;
@@ -177,10 +179,12 @@ export class MessengerConnector implements botbuilder.IConnector {
           const sender = msg.sender.id;
           const senderName = 'John Doe';
           const recipient = msg.recipient.id;
-          const attachments = (msg.message.attachments || []).map((attachment) => ({
-            contentType: attachment.type,
-            contentUrl: attachment.payload.url
-          }));
+          let attachments = [];
+          if(msg.message) 
+            attachments = (msg.message.attachments || []).map((attachment) => ({
+              contentType: attachment.type,
+              contentUrl: attachment.payload.url
+            }));
 
           let m = {
             type: 'message',
@@ -199,9 +203,15 @@ export class MessengerConnector implements botbuilder.IConnector {
             locale: 'textLocale',
             channelData: 'sourceEvent',
             agent: 'botbuilder',
-            source: 'facebook',
-            text: msg.message.text,
+            source: 'facebook'
           };
+          
+          if(msg.message)
+            m.text = msg.message.text;
+          else if(msg.postback) {
+            m.text = msg.postback.payload;
+            m.value = msg.postback.payload;
+          }
 
           // if (msg.message.type !== "text") {
           //     // m.text = msg.message.type;
@@ -224,7 +234,7 @@ export class MessengerConnector implements botbuilder.IConnector {
 
           // let fs = require("fs");
           // var data = fs.readFileSync(__dirname+'/joke/girl.jpg', 'utf-8');
-          // console.log(data);
+          console.log(m);
           _this.handler([m]);
           // _this.handler(data);
         }

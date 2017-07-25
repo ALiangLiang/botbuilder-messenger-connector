@@ -1,5 +1,6 @@
 const flatten = require('array-flatten');
-import * as Components from 'messenger-components';
+const chunk = require('chunk');
+import * as Components from 'messenger-bot-components';
 const cp = Components();
 
 export default function (messages) {
@@ -18,7 +19,7 @@ export default function (messages) {
       msgs = [{
         text: msg.text
       }];
-    else if(!msg.text && msg.attachments)
+    else if(!msg.text && msg.attachments) {
       msgs = msg.attachments.map((att) => {
         if(att.contentType.startsWith('video'))
           return cp.video(att.contentUrl).toJSON();
@@ -29,20 +30,32 @@ export default function (messages) {
         else if(att.contentType.startsWith('file'))
           return cp.file(att.contentUrl).toJSON();
         else if(att.contentType === 'application/vnd.microsoft.card.hero'
-          || att.contentType === 'application/vnd.microsoft.card.thumbnail')
-          return cp.template.generic([
-            cp.templateElement.generic(att.content.title, {
-              subtitle: att.content.subtitle,
-              imageUrl: (att.content.images) ? att.content.images[0].url : void 0,
-              buttons: att.content.buttons.map((btn) => 
-                cp.button.postback(btn.title, btn.value))
+          || att.contentType === 'application/vnd.microsoft.card.thumbnail') {
+          const genericElements = chunk(att.content.buttons, 3)
+            .map((btns) => {
+              const buttons = btns.map((btn) => {
+                if(btn.type === 'message')
+                  return cp.button.postback(btn.title, btn.value);
+                else if(btn.type === 'postBack')
+                  return cp.button.postback(btn.title, btn.value);
+                else if(btn.type === 'openUrl')
+                  return cp.button.url(btn.title, btn.value);
+                else
+                  return cp.button.postback(btn.title, btn.value);
+              });
+              return cp.templateElement.generic(att.content.title, {
+                  subtitle: att.content.subtitle,
+                  imageUrl: (att.content.images) ? att.content.images[0].url : void 0,
+                  buttons
+                });
             })
-          ]).toJSON();
-        else
+          return chunk(genericElements, 10).map((generic) => cp.template.generic(generic));
+        } else
           console.log('Unknown content type: ', att.contentType);
       });
-
-    return msgs.map((msg) => ({
+    }
+    
+    return flatten(msgs).map((msg) => ({
       recipient: { id },
       message: msg
     }));
